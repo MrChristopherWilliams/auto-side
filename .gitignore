@@ -1,1 +1,3 @@
 secrets.rb
+.DS_Store
+.gitignore
