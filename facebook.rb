@@ -17,8 +17,8 @@ browser = Watir::Browser.new :chrome, proxy: proxy
 browser.goto 'facebook.com'
 
 # Enter Facebook login details and click login
-browser.text_field(id: 'email').set '****'
-browser.text_field(id: 'pass').set '****'
+browser.text_field(id: 'email').set $email
+browser.text_field(id: 'pass').set $password
 browser.button(type: 'submit').click
 
 browser.wait_until { browser.h1.text == 'Match. Chat. Date.' }
