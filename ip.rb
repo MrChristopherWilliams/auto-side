@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'watir'
 require 'webdrivers'
+require_relative 'secrets'
 
 proxy = {
   http: '185.10.166.130:8080',

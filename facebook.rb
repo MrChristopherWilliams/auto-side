@@ -1,10 +1,9 @@
-require 'rubygems'
 require 'watir'
 require 'webdrivers'
 require 'json'
 require 'open-uri'
+require 'faraday_middleware'
 require_relative 'secrets'
-
 
 proxy = {
   http: '185.10.166.130:8080',
@@ -27,16 +26,34 @@ if browser.form.id == 'platformDialogForm'
   auth_url = browser
   auth_html = auth_url.html
   facebook_authentication_token = auth_html.scan(/access_token=(.*)&data_access/).last.first
-  return facebook_authentication_token
+  puts facebook_authentication_token
 else
   print "error: Login failed. Check your username and password."
 end
 
 # Get FB user id
-def facebook_user_id(facebook_authentication_token)
-  url = 'https://graph.facebook.com/me?access_token=' + facebook_authentication_token
-  fb_seralized = open(url).read
-  fb = JSON.parse(fb_seralized)
-  facebook_user_id = fb["id"]
-  return facebook_user_id
+url = 'https://graph.facebook.com/me?access_token=' + facebook_authentication_token
+fb_seralized = open(url).read
+fb = JSON.parse(fb_seralized)
+facebook_user_id = fb['token']
+puts facebook_user_id
+
+# Tinder auth token
+connection = Faraday.new(url: 'https://api.gotinder.com') do |faraday|
+  faraday.request :json
+  faraday.response :logger
+  faraday.adapter Faraday.default_adapter
 end
+connection.headers['User-agent'] = 'Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)'
+
+rsp = connection.post '/v2/auth/login/facebook', {'token': facebook_authentication_token, 'facebook_id': facebook_user_id}
+puts "parsing"
+jrsp = JSON.parse(rsp.body)
+puts "extracting token"
+jrsp_array = jrsp.map do |key, value|
+  value.each do |k,v|
+  end
+end
+tinder_authentication_data = jrsp_array[1]
+tinder_api_token = tinder_authentication_data["api_token"]
+tinder_refresh_token = tinder_authentication_data["refresh_token"]
