@@ -5,4 +5,8 @@ end
 
 def like_from_user_id(user_id)
   @connection.get "like/#{user_id}"
- end
+end
+
+def set_location
+
+end

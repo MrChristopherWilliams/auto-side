@@ -4,8 +4,8 @@ def create_client
   tinder_client.build_connection
   fb_token = facebook_authentication_token
   fb_user_id = facebook_user_id(fb_token)
-  tinder_token = tinder_authentication_token(fb_token, fb_user_id)
-  tinder_client.sign_in1(tinder_token)
+  @tinder_token = tinder_authentication_token(fb_token, fb_user_id)
+  tinder_client.sign_in1(@tinder_token)
   tinder_client
 end
 
