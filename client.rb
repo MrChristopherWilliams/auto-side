@@ -27,20 +27,6 @@ class Client
     @connection
   end
 
-  def get_authentication_token(facebook_authentication_token, facebook_user_id)
-    rsp = @connection.post '/v2/auth/login/facebook', {'token': facebook_authentication_token, 'facebook_id': facebook_user_id}
-    puts "parsing"
-    jrsp = JSON.parse(rsp.body)
-    puts "extracting token"
-    jrsp_array = jrsp.map do |key, value|
-      value.each do |k,v|
-      end
-    end
-    tinder_authentication_data = jrsp_array[1]
-    tinder_api_token = tinder_authentication_data["api_token"]
-    tinder_refresh_token = tinder_authentication_data["refresh_token"]
-  end
-
   def sign_in1(authentication_token)
     @connection.headers['X-Auth-Token'] = authentication_token
     puts @connection.headers

@@ -7,6 +7,7 @@ new_client = create_client
 puts new_client.profile.name
 
 count = 0
+post_location
 new_client.recommended_users.each do |user|
   @connection.headers[:content_type] = 'application/json'
   @connection.headers['X-Auth-Token'] = @tinder_token
@@ -15,6 +16,8 @@ new_client.recommended_users.each do |user|
     if random_number < 8
       like_from_user_id(user.id)
       puts "liked user #{user.name}"
+      puts user.bio
+      puts user.gender
       puts @connection.headers
       sleep(rand(3.1..7.3))
       count += 1
